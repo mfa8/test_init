@@ -24,5 +24,12 @@ listing without a fee-inclusive price never counts as a deal.
 |---|---|
 | `lft` | LiveFootballTickets listing API, with fees from the site's own `/api/tickets/{id}/calculate` endpoint so the total matches checkout |
 
+## Browser-only sites
+
+SeatPick sits behind Vercel's bot checkpoint, which only a real browser clears.
+`browser_setup.sh` installs Playwright and trusts the cloud proxy's CA for
+Chromium; `browse.py URL` then loads the page once and prints its text, or
+`BLOCKED` if the checkpoint doesn't clear (it never retries).
+
 A Claude Code Routine runs this hourly and sends a push notification when a
 deal turns up.
