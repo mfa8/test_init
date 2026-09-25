@@ -6,6 +6,7 @@ which a browser clears by running the page's own JavaScript). One load per
 run; if the checkpoint doesn't clear it says so rather than retrying.
 Run browser_setup.sh first.
 """
+import os
 import sys
 
 from playwright.sync_api import sync_playwright
@@ -16,7 +17,7 @@ CHROMIUM = "/opt/pw-browsers/chromium"
 def main(url, wait_s=45):
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True, executable_path=CHROMIUM,
-                              proxy={"server": "http://127.0.0.1:45133"})
+                              proxy={"server": os.environ["HTTPS_PROXY"]} if os.environ.get("HTTPS_PROXY") else None)
         pg = b.new_context(locale="en-US", viewport={"width": 1366, "height": 900}).new_page()
         pg.goto(url, timeout=60000)
         for _ in range(wait_s // 5):
